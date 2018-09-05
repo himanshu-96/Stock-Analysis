@@ -6,14 +6,23 @@ import numpy as np
 import time
 import functools
 
+totalStart = time.time()
+
 date,bid,ask = np.loadtxt("GBPUSD1d.txt", unpack=True, delimiter=",", converters={0:mdates.bytespdate2num('%Y%m%d%H%M%S')})
 avgLine = ((bid+ask)/2)
 patternArray = []
 performanceArray = []
+patForRec = []
 
 def percentChange(startPoint, currentPoint):
-    change = ((float(currentPoint)-float(startPoint))/float(abs(startPoint)))*100
-    return change
+    try:
+        change = ((float(currentPoint)-float(startPoint))/float(abs(startPoint)))*100.00
+        if change == 0.0:
+            return 0.00000001
+        else:
+            return  change
+    except:
+        return 0.0001
 
 def patternStore():
     patStartTime = time.time()
@@ -53,13 +62,9 @@ def patternStore():
         performanceArray.append(futureOutcome)
         y+=1
     patEndTime = time.time()
-    print(len(patternArray))
-    print(len(performanceArray))
     print("time", patEndTime-patStartTime,"seconds")
-    patternRecognition()
 
-def patternRecognition():
-    patForRec = []
+def currentPattern():
     cp1 = percentChange(avgLine[-11], avgLine[-10])
     cp2 = percentChange(avgLine[-11], avgLine[-9])
     cp3 = percentChange(avgLine[-11], avgLine[-8])
@@ -81,7 +86,33 @@ def patternRecognition():
     patForRec.append(cp8)
     patForRec.append(cp9)
     patForRec.append(cp10)
-    print(patForRec)
+
+def patternRecognition():
+    for eachPattern in patternArray:
+        similarity1 = 100.00 - abs(percentChange(eachPattern[0], patForRec[0]))
+        similarity2 = 100.00 - abs(percentChange(eachPattern[1], patForRec[1]))
+        similarity3 = 100.00 - abs(percentChange(eachPattern[2], patForRec[2]))
+        similarity4 = 100.00 - abs(percentChange(eachPattern[3], patForRec[3]))
+        similarity5 = 100.00 - abs(percentChange(eachPattern[4], patForRec[4]))
+        similarity6 = 100.00 - abs(percentChange(eachPattern[5], patForRec[5]))
+        similarity7 = 100.00 - abs(percentChange(eachPattern[6], patForRec[6]))
+        similarity8 = 100.00 - abs(percentChange(eachPattern[7], patForRec[7]))
+        similarity9 = 100.00 - abs(percentChange(eachPattern[8], patForRec[8]))
+        similarity10 = 100.00 - abs(percentChange(eachPattern[9], patForRec[9]))
+
+        similarity = (similarity1+similarity2+similarity3+similarity4+similarity5+similarity6+similarity7+similarity8+similarity9+similarity10)/10.00
+
+        if similarity > 70:
+            patdex = patternArray.index(eachPattern)
+            print('+++++++++++++++++++++++++++++')
+            print('#############################')
+            print(patForRec)
+            print("---------------")
+            print(eachPattern)
+            print("Predicted Outcome",performanceArray[patdex])
+            print("#############################")
+            print("+++++++++++++++++++++++++++++")
+            
 
 def graphRawFX():
     fig = plt.figure(figsize=(10, 7))
@@ -98,6 +129,8 @@ def graphRawFX():
     plt.grid(True)
     plt.show()
 
-if __name__ == '__main__':
-    patternStore()
-    patternRecognition()
+patternStore()
+currentPattern()
+patternRecognition()
+totalEnd = time.time()- totalStart
+print("Total Time:  ",totalEnd,"  seconds")
