@@ -7,7 +7,7 @@ import numpy as np
 def graphRawFX():
     date,bid,ask = np.loadtxt("GBPUSD1d.txt", unpack=True, delimiter=",", converters={0:mdates.bytespdate2num('%Y%m%d%H%M%S')})
     fig = plt.figure(figsize=(10, 7))
-    ax1 = plt.subplot2grid((40,40), (0,0), rowspan=40, colspan=40)
+    ax1 = plt.subplot2grid((40,40), (0,0), rowspan=50, colspan=50)
     ax1.plot(date,bid)
     ax1.plot(date,ask)
     plt.gca().get_yaxis().get_major_formatter().set_useOffset(False)
