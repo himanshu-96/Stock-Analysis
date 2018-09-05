@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import matplotlib.dates as mdates
 import numpy as np
+import time
+import functools
 
 date,bid,ask = np.loadtxt("GBPUSD1d.txt", unpack=True, delimiter=",", converters={0:mdates.bytespdate2num('%Y%m%d%H%M%S')})
 
@@ -49,4 +51,5 @@ def graphRawFX():
     plt.show()
 
 if __name__ == '__main__':
-    graphRawFX()
+    #graphRawFX()
+    patternFinder()
