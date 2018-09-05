@@ -4,6 +4,9 @@ import matplotlib.ticker as mticker
 import matplotlib.dates as mdates
 import numpy as np
 
+def percentchange(startPoint, currentPoint):
+    return ((currentPoint-startPoint)/startPoint)*100
+
 def graphRawFX():
     date,bid,ask = np.loadtxt("GBPUSD1d.txt", unpack=True, delimiter=",", converters={0:mdates.bytespdate2num('%Y%m%d%H%M%S')})
     fig = plt.figure(figsize=(10, 7))
