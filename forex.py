@@ -12,7 +12,8 @@ patternArray = []
 performanceArray = []
 
 def percentChange(startPoint, currentPoint):
-    return ((float(currentPoint)-float(startPoint))/float(abs(startPoint)))*100
+    change = ((float(currentPoint)-float(startPoint))/float(abs(startPoint)))*100
+    return change
 
 def patternStore():
     patStartTime = time.time()
@@ -55,6 +56,7 @@ def patternStore():
     print(len(patternArray))
     print(len(performanceArray))
     print("time", patEndTime-patStartTime,"seconds")
+    patternRecognition()
 
 def patternRecognition():
     patForRec = []
@@ -79,6 +81,7 @@ def patternRecognition():
     patForRec.append(cp8)
     patForRec.append(cp9)
     patForRec.append(cp10)
+    print(patForRec)
 
 def graphRawFX():
     fig = plt.figure(figsize=(10, 7))
